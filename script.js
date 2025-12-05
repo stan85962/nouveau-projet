@@ -1,109 +1,175 @@
-// --- DONNÉES PRODUITS DISPONIBLES ---
+// --- DONNÉES ---
 const items = [
-  { id: 1, title: "Canon EOS R6", category: "tech", price: 45, img: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=500&q=80" },
-  { id: 2, title: "Sac Gucci Dionysus", category: "mode", price: 60, img: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=500&q=80" },
-  { id: 3, title: "Drone DJI Mini 3", category: "tech", price: 30, img: "https://images.unsplash.com/photo-1473968512647-3e447244af8f?auto=format&fit=crop&w=500&q=80" },
-  { id: 4, title: "Perceuse Bosch", category: "maison", price: 20, img: "https://images.unsplash.com/photo-1572981779307-38b8cabb2407?auto=format&fit=crop&w=500&q=80" },
-  { id: 5, title: "PS5 Slim", category: "tech", price: 25, img: "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?auto=format&fit=crop&w=500&q=80" },
-  { id: 6, title: "Robe Soirée Rouge", category: "mode", price: 40, img: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=500&q=80" }
+  { id: 1, title: "Canon EOS R6", category: "tech", price: 45, user: "Sophie L.", img: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=500&q=80" },
+  { id: 2, title: "Sac Gucci", category: "mode", price: 60, user: "Clara M.", img: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=500&q=80" },
+  { id: 3, title: "Drone DJI Mini", category: "tech", price: 30, user: "Marc D.", img: "https://images.unsplash.com/photo-1473968512647-3e447244af8f?auto=format&fit=crop&w=500&q=80" },
+  { id: 4, title: "Perceuse Bosch", category: "maison", price: 20, user: "Jean B.", img: "https://images.unsplash.com/photo-1572981779307-38b8cabb2407?auto=format&fit=crop&w=500&q=80" },
 ];
 
-// --- DONNÉES AVIS (QUE DES 5 ÉTOILES POUR STAN) ---
-const stanReviews = [
-    { author: "Julie M.", text: "Stan est génial ! Matériel en parfait état, super arrangeant sur les horaires. Je recommande à 100%.", date: "Il y a 2 jours" },
-    { author: "Thomas L.", text: "Première location sur l'appli et grâce à Stan c'était parfait. Merci !", date: "Il y a 1 semaine" },
-    { author: "Sophie B.", text: "Le drone était chargé à bloc, propre, avec tous les câbles. Rien à dire. 👍", date: "Il y a 2 semaines" },
-    { author: "Karim Z.", text: "Super sympa et pro. À la prochaine Stan !", date: "Il y a 1 mois" }
-];
+let favorites = []; // Liste des favoris
 
-// --- AFFICHAGE NAVIGATION ---
+// --- NAVIGATION ---
 function showPage(pageId) {
-    // Cacher toutes les pages
     document.querySelectorAll('.page-section').forEach(el => el.style.display = 'none');
     document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
 
-    // Afficher la page demandée
     const target = document.getElementById('page-' + pageId);
     if(target) target.style.display = 'block';
 
-    // Activer le bouton correspondant
-    // Petite logique pour trouver le bon bouton selon l'ordre
     const indexMap = { 'home':0, 'search':1, 'chat':2, 'profile':3 };
-    const btn = document.querySelectorAll('.nav-btn')[indexMap[pageId]];
-    if(btn) btn.classList.add('active');
+    document.querySelectorAll('.nav-btn')[indexMap[pageId]].classList.add('active');
 
+    // Rafraichir les grilles si besoin
+    if(pageId === 'home') renderGrid(items, 'products-grid');
     if(pageId === 'search') renderGrid(items, 'search-results');
+    if(pageId === 'profile') renderFavorites(); // Mise à jour des favoris
 }
 
-// --- RENDU GRILLE PRODUITS ---
+// --- RENDU DES CARTES ---
 function renderGrid(data, containerId) {
     const container = document.getElementById(containerId);
     container.innerHTML = '';
     
+    if(data.length === 0) { container.innerHTML = '<p style="color:#666; margin:20px;">Rien à afficher ici.</p>'; return; }
+
     data.forEach(item => {
+        // Vérifier si l'objet est liké
+        const isLiked = favorites.includes(item.id) ? 'liked' : '';
+        const heartIcon = favorites.includes(item.id) ? 'fa-solid' : 'fa-regular';
+
         const div = document.createElement('div');
         div.className = 'card';
         div.innerHTML = `
+            <div class="card-top">
+                <div class="user-badge">${item.user}</div>
+                <div class="like-btn ${isLiked}" onclick="toggleLike(${item.id})">
+                    <i class="${heartIcon} fa-heart"></i>
+                </div>
+            </div>
             <img src="${item.img}" alt="${item.title}">
             <div class="card-info">
                 <div class="card-title">${item.title}</div>
                 <div class="card-price">${item.price}€ /jour</div>
-                <button class="btn-rent" onclick="openBooking(${item.id})">Louer</button>
+                <button class="btn-rent" onclick="openBooking('${item.title}', ${item.price})">Louer</button>
             </div>
         `;
         container.appendChild(div);
     });
+}
+
+// --- LOGIQUE FAVORIS ---
+function toggleLike(id) {
+    if (favorites.includes(id)) {
+        favorites = favorites.filter(favId => favId !== id); // Enlever
+    } else {
+        favorites.push(id); // Ajouter
+    }
+    // Re-rendre la page active pour voir le cœur changer
+    const activePage = document.querySelector('.page-section[style*="block"]').id;
+    if(activePage === 'page-home') renderGrid(items, 'products-grid');
+    if(activePage === 'page-profile') renderFavorites();
+}
+
+function renderFavorites() {
+    const favItems = items.filter(item => favorites.includes(item.id));
+    renderGrid(favItems, 'favorites-grid');
+}
+
+// --- LOGIQUE DÉPÔT ANNONCE (NOUVEAU) ---
+function openCharter() { document.getElementById('modal-charter').style.display = 'block'; }
+function goToPostForm() {
+    closeModal('modal-charter');
+    document.getElementById('modal-post').style.display = 'block';
+}
+
+function submitAd() {
+    const title = document.getElementById('post-title').value;
+    const price = document.getElementById('post-price').value;
+    const cat = document.getElementById('post-cat').value;
+
+    if(!title || !price) { alert("Merci de remplir le titre et le prix !"); return; }
+
+    // On crée le nouvel objet
+    const newItem = {
+        id: items.length + 1,
+        title: title,
+        price: parseInt(price),
+        category: cat,
+        user: "Stan (Moi)", // C'est Stan qui poste
+        img: "https://images.unsplash.com/photo-1550009158-9ebf69173e03?auto=format&fit=crop&w=500&q=80" // Image générique tech pour la démo
+    };
+
+    items.unshift(newItem); // Ajouter au début de la liste
+    
+    closeModal('modal-post');
+    alert("🎉 Votre annonce est en ligne !");
+    
+    // Vider les champs
+    document.getElementById('post-title').value = '';
+    document.getElementById('post-price').value = '';
+
+    showPage('home'); // Retour à l'accueil pour voir l'annonce
+}
+
+// --- LOGIQUE NOTIFICATION (SIMULATION) ---
+setTimeout(() => {
+    document.getElementById('notif-badge').style.display = 'block';
+    document.getElementById('new-msg').style.display = 'flex';
+}, 3000); // Apparaît après 3 secondes
+
+function readMessage() {
+    document.getElementById('notif-badge').style.display = 'none';
+    document.getElementById('new-msg').style.border = 'none';
+    document.getElementById('new-msg').style.background = 'var(--card-glass)';
+    document.querySelector('.badge-new').style.display = 'none';
+}
+
+// --- PROFIL TABS (Avis vs Favoris) ---
+function switchProfileTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+
+    if (tab === 'reviews') {
+        document.getElementById('tab-reviews').style.display = 'block';
+        document.getElementById('tab-favorites').style.display = 'none';
+    } else {
+        document.getElementById('tab-reviews').style.display = 'none';
+        document.getElementById('tab-favorites').style.display = 'block';
+        renderFavorites();
+    }
 }
 
 // --- RENDU AVIS (POUR STAN) ---
-function renderStanReviews() {
-    const container = document.getElementById('reviews-list');
-    container.innerHTML = '';
-
-    stanReviews.forEach(rev => {
-        const div = document.createElement('div');
-        div.className = 'review-item';
-        div.innerHTML = `
-            <div class="review-header">
-                <span class="review-author">${rev.author}</span>
-                <span class="review-stars">
-                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                </span>
+const stanReviews = [
+    { author: "Julie M.", text: "Stan est génial ! Matériel parfait.", date: "Il y a 2 jours" },
+    { author: "Thomas L.", text: "Première location au top.", date: "Il y a 1 semaine" }
+];
+const reviewContainer = document.getElementById('reviews-list');
+stanReviews.forEach(rev => {
+    reviewContainer.innerHTML += `
+        <div class="review-item">
+            <div style="font-weight:bold; display:flex; justify-content:space-between;">
+                ${rev.author} <span style="color:#fbbf24;">★★★★★</span>
             </div>
-            <div class="review-text">"${rev.text}"</div>
-            <span class="review-date">${rev.date}</span>
-        `;
-        container.appendChild(div);
-    });
-}
+            <div style="font-size:13px; color:#ccc; margin-top:5px;">"${rev.text}"</div>
+        </div>`;
+});
 
-// --- FILTRES ---
+// --- UTILS ---
 function filterItems(cat) {
     document.querySelectorAll('.filters button').forEach(b => b.classList.remove('active'));
     event.target.classList.add('active');
     const filtered = cat === 'all' ? items : items.filter(i => i.category === cat);
     renderGrid(filtered, 'products-grid');
 }
-
-// --- MODALES SIMPLES ---
-function openBooking(id) {
-    const item = items.find(i => i.id === id);
-    document.getElementById('book-title').innerText = item.title;
-    document.getElementById('book-total').innerText = (item.price + 2) + "€";
+function openBooking(title, price) {
+    document.getElementById('book-title').innerText = title;
+    document.getElementById('book-total').innerText = (price + 2) + "€ (inclus assurance)";
     document.getElementById('modal-booking').style.display = 'block';
 }
-function confirmPayment() { alert("Réservation confirmée !"); closeModal('modal-booking'); }
-function openCharter() { document.getElementById('modal-charter').style.display = 'block'; }
+function confirmPayment() { alert("Réservé !"); closeModal('modal-booking'); }
 function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+window.onclick = function(e) { if(e.target.classList.contains('modal')) e.target.style.display = "none"; }
 
-// --- RECHERCHE ---
-document.getElementById('search-input').addEventListener('keyup', (e) => {
-    const val = e.target.value.toLowerCase();
-    const filtered = items.filter(i => i.title.toLowerCase().includes(val));
-    renderGrid(filtered, 'search-results');
-});
-
-// --- INIT ---
-// Lancer tout au démarrage
+// Init
 renderGrid(items, 'products-grid');
-renderStanReviews(); // Affiche les avis de Stan
