@@ -15,10 +15,15 @@
     <nav class="glass-panel">
       <div class="logo">RentSphere <span class="dot"></span></div>
       <div class="nav-icons">
-        <button onclick="showPage('home')" class="nav-btn active" title="Accueil"><i class="fa-solid fa-house"></i></button>
-        <button onclick="showPage('search')" class="nav-btn" title="Recherche"><i class="fa-solid fa-magnifying-glass"></i></button>
-        <button onclick="showPage('chat')" class="nav-btn" title="Messages"><i class="fa-regular fa-comment-dots"></i></button>
-        <button onclick="showPage('profile')" class="nav-btn profile-btn-nav" title="Mon Profil">
+        <button onclick="showPage('home')" class="nav-btn active"><i class="fa-solid fa-house"></i></button>
+        <button onclick="showPage('search')" class="nav-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+        
+        <button onclick="showPage('chat')" class="nav-btn" style="position:relative;">
+            <i class="fa-regular fa-comment-dots"></i>
+            <span id="notif-badge" class="notif-badge" style="display:none;"></span>
+        </button>
+
+        <button onclick="showPage('profile')" class="nav-btn profile-btn-nav">
             <div class="mini-avatar"></div>
         </button>
         <button onclick="openCharter()" class="btn-primary-sm">Déposer</button>
@@ -28,7 +33,7 @@
     <section id="page-home" class="page-section active">
         <header class="hero">
             <h1>Bonjour, <span class="gradient-text">Stan.</span></h1>
-            <p>Prêt à louer vos objets aujourd'hui ?</p>
+            <p>Qu'allez-vous louer ou mettre en ligne aujourd'hui ?</p>
         </header>
 
         <div class="filters">
@@ -39,7 +44,6 @@
         </div>
 
         <div class="container">
-            <h3>Dernières nouveautés 🔥</h3>
             <div id="products-grid" class="grid"></div>
         </div>
     </section>
@@ -49,7 +53,7 @@
             <h2>Explorer 🌍</h2>
             <div class="search-bar">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="search-input" placeholder="Que cherchez-vous ?">
+                <input type="text" id="search-input" placeholder="Ex: Drone, Robe, Perceuse...">
             </div>
             <div id="search-results" class="grid"></div>
         </div>
@@ -59,21 +63,22 @@
         <div class="container">
             <h2>Messages 💬</h2>
             <div class="chat-list">
+                <div id="new-msg" class="chat-item new-message" style="display:none;" onclick="readMessage()">
+                    <div class="avatar" style="background-image: url('https://i.pravatar.cc/150?img=32');"></div>
+                    <div class="chat-info">
+                        <div class="chat-name">Chloé (Intéressée) <span class="badge-new">Nouveau</span></div>
+                        <div class="chat-preview" style="color:white; font-weight:bold;">Bonjour Stan, votre PS5 est dispo ?</div>
+                    </div>
+                    <div class="chat-time">À l'instant</div>
+                </div>
+
                 <div class="chat-item">
                     <div class="avatar" style="background-image: url('https://i.pravatar.cc/150?img=9');"></div>
                     <div class="chat-info">
                         <div class="chat-name">Julie M.</div>
-                        <div class="chat-preview">Salut Stan ! Merci pour la caméra, c'était top.</div>
+                        <div class="chat-preview">Salut Stan ! Merci pour la caméra.</div>
                     </div>
                     <div class="chat-time">14:02</div>
-                </div>
-                <div class="chat-item">
-                    <div class="avatar" style="background-image: url('https://i.pravatar.cc/150?img=11');"></div>
-                    <div class="chat-info">
-                        <div class="chat-name">Paul B.</div>
-                        <div class="chat-preview">Dispo ce week-end ?</div>
-                    </div>
-                    <div class="chat-time">Hier</div>
                 </div>
             </div>
         </div>
@@ -81,57 +86,78 @@
 
     <section id="page-profile" class="page-section" style="display:none;">
         <div class="container profile-container">
-            
             <div class="profile-card glass-panel">
                 <div class="profile-header-top">
                     <div class="profile-avatar-large"></div>
                     <div class="profile-info">
                         <h2 class="profile-name">Stan <i class="fa-solid fa-circle-check verified-badge"></i></h2>
                         <div class="profile-meta">Membre depuis 2023 • Paris</div>
-                        <div class="profile-rating-big">
-                            <i class="fa-solid fa-star"></i> 5.0 <span class="review-count">(42 avis)</span>
-                        </div>
+                        <div class="profile-rating-big"><i class="fa-solid fa-star"></i> 5.0</div>
                     </div>
                 </div>
                 
-                <div class="stats-row">
-                    <div class="stat-box"><span>42</span><label>Locations</label></div>
-                    <div class="stat-box"><span>100%</span><label>Réponse</label></div>
-                    <div class="stat-box"><span>Top</span><label>Vendeur</label></div>
-                </div>
-
-                <div class="profile-actions">
-                    <button class="btn-outline-gray">Modifier le profil</button>
-                    <button class="btn-outline-gray">Paramètres</button>
+                <div class="profile-tabs">
+                    <button class="tab-btn active" onclick="switchProfileTab('reviews')">Avis (42)</button>
+                    <button class="tab-btn" onclick="switchProfileTab('favorites')">Mes Favoris ❤️</button>
                 </div>
             </div>
 
-            <div class="reviews-section">
-                <h3>Ce qu'on pense de vous ❤️</h3>
-                <div id="reviews-list" class="reviews-list">
-                    </div>
+            <div id="tab-reviews">
+                <div id="reviews-list" class="reviews-list"></div>
             </div>
 
+            <div id="tab-favorites" style="display:none;">
+                <h3 style="margin-bottom:20px;">Objets sauvegardés</h3>
+                <div id="favorites-grid" class="grid">
+                    <p style="color:#666;">Aucun favori pour l'instant.</p>
+                </div>
+            </div>
         </div>
     </section>
 
-    <div id="modal-booking" class="modal">
-        <div class="modal-content glass-panel booking-modal">
-            <span class="close" onclick="closeModal('modal-booking')">&times;</span>
-            <h2>Réservation</h2>
-            <div class="booking-summary">
-                <div id="book-title" class="book-title">Objet</div>
-                <div class="book-total">Total: <span id="book-total">0€</span></div>
+    <div id="modal-post" class="modal">
+        <div class="modal-content glass-panel">
+            <span class="close" onclick="closeModal('modal-post')">&times;</span>
+            <h2>Créer une annonce</h2>
+            
+            <div class="form-group">
+                <label>Titre de l'objet</label>
+                <input type="text" id="post-title" class="input-field" placeholder="Ex: Vélo électrique...">
             </div>
-            <button class="btn-primary full-width" onclick="confirmPayment()">Confirmer (Démo)</button>
+
+            <div class="form-group">
+                <label>Prix par jour (€)</label>
+                <input type="number" id="post-price" class="input-field" placeholder="Ex: 15">
+            </div>
+
+            <div class="form-group">
+                <label>Catégorie</label>
+                <select id="post-cat" class="input-field">
+                    <option value="tech">Tech / Gaming</option>
+                    <option value="mode">Mode / Luxe</option>
+                    <option value="maison">Maison / Bricolage</option>
+                </select>
+            </div>
+
+            <button class="btn-primary full-width" onclick="submitAd()">Publier l'annonce</button>
         </div>
     </div>
 
     <div id="modal-charter" class="modal">
         <div class="modal-content glass-panel">
             <span class="close" onclick="closeModal('modal-charter')">&times;</span>
-            <h2>Nouvelle Annonce</h2>
-            <p>Fonctionnalité d'ajout d'annonce à venir.</p>
+            <h2>📜 Charte de Confiance</h2>
+            <div class="alert-box"><h3>⛔ RÈGLES</h3><ul><li>Photos réelles obligatoires.</li><li>Pas de contrefaçons.</li></ul></div>
+            <button class="btn-primary full-width" onclick="goToPostForm()">J'accepte et je continue</button>
+        </div>
+    </div>
+
+    <div id="modal-booking" class="modal">
+        <div class="modal-content glass-panel booking-modal">
+            <span class="close" onclick="closeModal('modal-booking')">&times;</span>
+            <h2>Réservation</h2>
+            <div class="booking-summary"><div id="book-title"></div><div id="book-total"></div></div>
+            <button class="btn-primary full-width" onclick="confirmPayment()">Confirmer</button>
         </div>
     </div>
 
