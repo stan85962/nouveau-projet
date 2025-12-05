@@ -3,28 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loca-Vinted</title>
+    <title>RentSphere</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <nav>
-      <div class="logo">Loca-Vinted 🔄</div>
+      <div class="logo">RentSphere ⚡</div>
       <div class="menu">
         <a href="#">Connexion</a>
-        <button class="btn-primary">Mettre en location</button>
+        <button class="btn-primary">Déposer une annonce</button>
       </div>
     </nav>
 
+    <header class="hero">
+        <h1>Louez tout, n'achetez rien.</h1>
+        <p>Tech, Outils, Mode : Le futur de la consommation est ici.</p>
+    </header>
+
     <div class="filters">
-      <button onclick="filterItems('all')" class="active">Tout</button>
-      <button onclick="filterItems('bricolage')">🔨 Bricolage</button>
-      <button onclick="filterItems('tech')">📷 High-Tech</button>
-      <button onclick="filterItems('mode')">👗 Mode / Luxe</button>
+      <button onclick="filterItems('all')" class="active">Tous les objets</button>
+      <button onclick="filterItems('tech')">🎮 Gaming & Tech</button>
+      <button onclick="filterItems('bricolage')">🛠️ Outils Pro</button>
+      <button onclick="filterItems('loisir')">🛹 Mobilité</button>
     </div>
 
     <div class="container">
-      <h2>Derniers objets à louer</h2>
       <div id="products-grid" class="grid"></div>
     </div>
 
