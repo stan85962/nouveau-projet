@@ -15,18 +15,18 @@
     <nav class="glass-panel">
       <div class="logo">RentSphere <span class="dot"></span></div>
       <div class="nav-icons">
-        <button onclick="showPage('home')" class="nav-btn active" title="Accueil"><i class="fa-solid fa-house"></i></button>
-        <button onclick="showPage('search')" class="nav-btn" title="Recherche"><i class="fa-solid fa-magnifying-glass"></i></button>
-        <button onclick="showPage('chat')" class="nav-btn" title="Messages"><i class="fa-regular fa-comment-dots"></i></button>
-        <button onclick="showPage('profile')" class="nav-btn" title="Profil"><i class="fa-regular fa-user"></i></button>
+        <button onclick="showPage('home')" class="nav-btn active"><i class="fa-solid fa-house"></i></button>
+        <button onclick="showPage('search')" class="nav-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+        <button onclick="showPage('chat')" class="nav-btn"><i class="fa-regular fa-comment-dots"></i></button>
+        <button onclick="showPage('profile')" class="nav-btn"><i class="fa-regular fa-user"></i></button>
         <button onclick="openCharter()" class="btn-primary-sm">Post</button>
       </div>
     </nav>
 
     <section id="page-home" class="page-section active">
         <header class="hero">
-            <h1>Louez tout,<br><span class="gradient-text">n'achetez rien.</span></h1>
-            <p>La marketplace de location nouvelle génération.</p>
+            <h1>Louez tout,<br><span class="gradient-text">en toute sécurité.</span></h1>
+            <p>Assurance AXA incluse • Vérification d'identité • Paiement sécurisé</p>
         </header>
 
         <div class="filters">
@@ -37,90 +37,85 @@
         </div>
 
         <div class="container">
-            <h3>Tendances du moment 🔥</h3>
             <div id="products-grid" class="grid"></div>
         </div>
     </section>
 
     <section id="page-search" class="page-section" style="display:none;">
         <div class="container search-container">
-            <h2>Rechercher un objet</h2>
+            <h2>Autour de moi 📍</h2>
             <div class="search-bar">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="search-input" placeholder="Ex: Drone, Robe, Perceuse...">
+                <input type="text" id="search-input" placeholder="Chercher un objet...">
             </div>
-            <div id="search-results" class="grid">
-                </div>
-        </div>
-    </section>
-
-    <section id="page-chat" class="page-section" style="display:none;">
-        <div class="container">
-            <h2>Vos Discussions 💬</h2>
-            <div class="chat-list">
-                <div class="chat-item">
-                    <div class="avatar" style="background-image: url('https://i.pravatar.cc/150?img=32');"></div>
-                    <div class="chat-info">
-                        <div class="chat-name">Sophie L.</div>
-                        <div class="chat-preview">Bonjour, le drone est dispo demain ?</div>
-                    </div>
-                    <div class="chat-time">10:30</div>
-                </div>
-                <div class="chat-item">
-                    <div class="avatar" style="background-image: url('https://i.pravatar.cc/150?img=12');"></div>
-                    <div class="chat-info">
-                        <div class="chat-name">Marc D.</div>
-                        <div class="chat-preview">Merci pour la location ! C'était top.</div>
-                    </div>
-                    <div class="chat-time">Hier</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="page-profile" class="page-section" style="display:none;">
-        <div class="container profile-container">
-            <div class="profile-header">
-                <div class="profile-avatar" style="background-image: url('https://i.pravatar.cc/150?img=68');"></div>
-                <h2>Utilisateur Test</h2>
-                <p>Membre depuis 2024 • ⭐️ 4.9/5</p>
-            </div>
-            
-            <div class="stats-row">
-                <div class="stat-box">
-                    <span>12</span>
-                    <label>Locations</label>
-                </div>
-                <div class="stat-box">
-                    <span>5</span>
-                    <label>Annonces</label>
-                </div>
-                <div class="stat-box">
-                    <span>84€</span>
-                    <label>Gagnés</label>
-                </div>
-            </div>
-
-            <h3>Mes Favoris ❤️</h3>
-            <div id="favorites-grid" class="grid">
-                <p style="color:#666; font-style:italic;">Aucun favori pour le moment.</p>
-            </div>
+            <div id="search-results" class="grid"></div>
         </div>
     </section>
 
     <div id="modal-charter" class="modal">
         <div class="modal-content glass-panel">
-            <span class="close" onclick="closeCharter()">&times;</span>
+            <span class="close" onclick="closeModal('modal-charter')">&times;</span>
             <h2>📜 Charte de Confiance</h2>
             <div class="alert-box">
                 <h3>⛔ RÈGLES DE SÉCURITÉ</h3>
                 <ul>
-                    <li>Pas d'êtres vivants.</li>
-                    <li>Pas d'objets dangereux.</li>
-                    <li>Respect et courtoisie obligatoires.</li>
+                    <li>Pas d'êtres vivants ni d'objets dangereux.</li>
+                    <li>Photos réelles obligatoires.</li>
                 </ul>
             </div>
-            <button class="btn-primary full-width" onclick="acceptCharter()">J'accepte</button>
+            <button class="btn-primary full-width" onclick="closeModal('modal-charter')">J'accepte</button>
+        </div>
+    </div>
+
+    <div id="modal-booking" class="modal">
+        <div class="modal-content glass-panel booking-modal">
+            <span class="close" onclick="closeModal('modal-booking')">&times;</span>
+            <h2>Résumé de la réservation</h2>
+            
+            <div class="booking-summary">
+                <div id="book-title" class="book-title">Nom de l'objet</div>
+                <div class="book-row">
+                    <span>Prix location (1 jour)</span>
+                    <span id="book-price">0€</span>
+                </div>
+                <div class="book-row protect">
+                    <span>🛡️ RentSphere Protect</span>
+                    <span>2.00€</span>
+                </div>
+                <div class="book-total">
+                    <span>Total à payer</span>
+                    <span id="book-total">0€</span>
+                </div>
+            </div>
+
+            <div class="logistics-section">
+                <h3>📍 Mode de récupération</h3>
+                <div class="radio-group">
+                    <label class="radio-card selected">
+                        <input type="radio" name="delivery" checked>
+                        <i class="fa-solid fa-handshake"></i>
+                        <div>
+                            <strong>Main propre</strong>
+                            <small id="book-location">Paris</small>
+                        </div>
+                    </label>
+                    <label class="radio-card">
+                        <input type="radio" name="delivery">
+                        <i class="fa-solid fa-box"></i>
+                        <div>
+                            <strong>Livraison</strong>
+                            <small>+6.50€ (Mondial Relay)</small>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="caution-box">
+                <i class="fa-solid fa-lock"></i>
+                <p>Une caution de <strong id="book-deposit">200€</strong> sera bloquée (non débitée) sur votre carte pour garantir le retour.</p>
+            </div>
+
+            <button class="btn-primary full-width" onclick="confirmPayment()">Payer et Réserver</button>
         </div>
     </div>
 
