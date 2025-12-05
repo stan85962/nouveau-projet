@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RentSphere App</title>
+    <title>RentSphere - Stan</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -15,18 +15,20 @@
     <nav class="glass-panel">
       <div class="logo">RentSphere <span class="dot"></span></div>
       <div class="nav-icons">
-        <button onclick="showPage('home')" class="nav-btn active"><i class="fa-solid fa-house"></i></button>
-        <button onclick="showPage('search')" class="nav-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
-        <button onclick="showPage('chat')" class="nav-btn"><i class="fa-regular fa-comment-dots"></i></button>
-        <button onclick="showPage('profile')" class="nav-btn"><i class="fa-regular fa-user"></i></button>
-        <button onclick="openCharter()" class="btn-primary-sm">Post</button>
+        <button onclick="showPage('home')" class="nav-btn active" title="Accueil"><i class="fa-solid fa-house"></i></button>
+        <button onclick="showPage('search')" class="nav-btn" title="Recherche"><i class="fa-solid fa-magnifying-glass"></i></button>
+        <button onclick="showPage('chat')" class="nav-btn" title="Messages"><i class="fa-regular fa-comment-dots"></i></button>
+        <button onclick="showPage('profile')" class="nav-btn profile-btn-nav" title="Mon Profil">
+            <div class="mini-avatar"></div>
+        </button>
+        <button onclick="openCharter()" class="btn-primary-sm">Déposer</button>
       </div>
     </nav>
 
     <section id="page-home" class="page-section active">
         <header class="hero">
-            <h1>Louez tout,<br><span class="gradient-text">en toute confiance.</span></h1>
-            <p>La communauté de location vérifiée par vos avis.</p>
+            <h1>Bonjour, <span class="gradient-text">Stan.</span></h1>
+            <p>Prêt à louer vos objets aujourd'hui ?</p>
         </header>
 
         <div class="filters">
@@ -37,90 +39,99 @@
         </div>
 
         <div class="container">
+            <h3>Dernières nouveautés 🔥</h3>
             <div id="products-grid" class="grid"></div>
         </div>
     </section>
 
     <section id="page-search" class="page-section" style="display:none;">
         <div class="container search-container">
-            <h2>Autour de moi 📍</h2>
+            <h2>Explorer 🌍</h2>
             <div class="search-bar">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="search-input" placeholder="Chercher un objet...">
+                <input type="text" id="search-input" placeholder="Que cherchez-vous ?">
             </div>
             <div id="search-results" class="grid"></div>
         </div>
     </section>
 
+    <section id="page-chat" class="page-section" style="display:none;">
+        <div class="container">
+            <h2>Messages 💬</h2>
+            <div class="chat-list">
+                <div class="chat-item">
+                    <div class="avatar" style="background-image: url('https://i.pravatar.cc/150?img=9');"></div>
+                    <div class="chat-info">
+                        <div class="chat-name">Julie M.</div>
+                        <div class="chat-preview">Salut Stan ! Merci pour la caméra, c'était top.</div>
+                    </div>
+                    <div class="chat-time">14:02</div>
+                </div>
+                <div class="chat-item">
+                    <div class="avatar" style="background-image: url('https://i.pravatar.cc/150?img=11');"></div>
+                    <div class="chat-info">
+                        <div class="chat-name">Paul B.</div>
+                        <div class="chat-preview">Dispo ce week-end ?</div>
+                    </div>
+                    <div class="chat-time">Hier</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section id="page-profile" class="page-section" style="display:none;">
         <div class="container profile-container">
-            <div class="profile-header">
-                <div class="profile-avatar" style="background-image: url('https://i.pravatar.cc/150?img=68');"></div>
-                <h2>Thomas R.</h2>
-                <div class="profile-rating">
-                    <i class="fa-solid fa-star"></i> 4.5 <span style="color:#888; font-size:14px;">(12 avis)</span>
-                </div>
-                <p>Passionné de Tech et de Bricolage.</p>
-                <button class="btn-outline" onclick="openReviewModal()">Simuler "Laisser un avis"</button>
-            </div>
             
-            <div class="stats-row">
-                <div class="stat-box"><span>12</span><label>Locations</label></div>
-                <div class="stat-box"><span>5</span><label>Annonces</label></div>
-                <div class="stat-box"><span>98%</span><label>Taux de réponse</label></div>
+            <div class="profile-card glass-panel">
+                <div class="profile-header-top">
+                    <div class="profile-avatar-large"></div>
+                    <div class="profile-info">
+                        <h2 class="profile-name">Stan <i class="fa-solid fa-circle-check verified-badge"></i></h2>
+                        <div class="profile-meta">Membre depuis 2023 • Paris</div>
+                        <div class="profile-rating-big">
+                            <i class="fa-solid fa-star"></i> 5.0 <span class="review-count">(42 avis)</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stats-row">
+                    <div class="stat-box"><span>42</span><label>Locations</label></div>
+                    <div class="stat-box"><span>100%</span><label>Réponse</label></div>
+                    <div class="stat-box"><span>Top</span><label>Vendeur</label></div>
+                </div>
+
+                <div class="profile-actions">
+                    <button class="btn-outline-gray">Modifier le profil</button>
+                    <button class="btn-outline-gray">Paramètres</button>
+                </div>
             </div>
 
-            <h3 style="margin-top:40px; border-top:1px solid #333; padding-top:20px;">Derniers avis reçus 💬</h3>
-            <div id="reviews-list" class="reviews-list">
-                </div>
+            <div class="reviews-section">
+                <h3>Ce qu'on pense de vous ❤️</h3>
+                <div id="reviews-list" class="reviews-list">
+                    </div>
+            </div>
+
         </div>
     </section>
 
     <div id="modal-booking" class="modal">
         <div class="modal-content glass-panel booking-modal">
             <span class="close" onclick="closeModal('modal-booking')">&times;</span>
-            <h2>Résumé de la réservation</h2>
+            <h2>Réservation</h2>
             <div class="booking-summary">
-                <div id="book-title" class="book-title">Nom de l'objet</div>
-                <div class="book-row"><span>Prix location</span><span id="book-price">0€</span></div>
-                <div class="book-row protect"><span>🛡️ RentSphere Protect</span><span>2.00€</span></div>
-                <div class="book-total"><span>Total</span><span id="book-total">0€</span></div>
+                <div id="book-title" class="book-title">Objet</div>
+                <div class="book-total">Total: <span id="book-total">0€</span></div>
             </div>
-            <div class="caution-box">
-                <i class="fa-solid fa-lock"></i>
-                <p>Caution de <strong id="book-deposit">200€</strong> bloquée (non débitée).</p>
-            </div>
-            <button class="btn-primary full-width" onclick="confirmPayment()">Payer et Réserver</button>
-        </div>
-    </div>
-
-    <div id="modal-review" class="modal">
-        <div class="modal-content glass-panel">
-            <span class="close" onclick="closeModal('modal-review')">&times;</span>
-            <h2>Noter un utilisateur</h2>
-            <p style="color:#aaa; font-size:14px; margin-bottom:20px;">Comment s'est passée la location avec Thomas ?</p>
-            
-            <div class="star-rating-input">
-                <i class="fa-regular fa-star" data-val="1" onclick="setRating(1)"></i>
-                <i class="fa-regular fa-star" data-val="2" onclick="setRating(2)"></i>
-                <i class="fa-regular fa-star" data-val="3" onclick="setRating(3)"></i>
-                <i class="fa-regular fa-star" data-val="4" onclick="setRating(4)"></i>
-                <i class="fa-regular fa-star" data-val="5" onclick="setRating(5)"></i>
-            </div>
-            <input type="hidden" id="selected-rating" value="0">
-
-            <textarea id="review-text" class="review-textarea" placeholder="Racontez votre expérience (ex: Super soigneux, ou Il a cassé le joystick...)"></textarea>
-            
-            <button class="btn-primary full-width" onclick="submitReview()">Publier l'avis</button>
+            <button class="btn-primary full-width" onclick="confirmPayment()">Confirmer (Démo)</button>
         </div>
     </div>
 
     <div id="modal-charter" class="modal">
         <div class="modal-content glass-panel">
             <span class="close" onclick="closeModal('modal-charter')">&times;</span>
-            <h2>📜 Charte de Confiance</h2>
-            <div class="alert-box"><h3>⛔ SÉCURITÉ</h3><ul><li>Respectez le matériel d'autrui.</li></ul></div>
-            <button class="btn-primary full-width" onclick="closeModal('modal-charter')">J'accepte</button>
+            <h2>Nouvelle Annonce</h2>
+            <p>Fonctionnalité d'ajout d'annonce à venir.</p>
         </div>
     </div>
 
