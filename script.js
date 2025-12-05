@@ -1,84 +1,88 @@
-// Simuler une base de données d'objets
 const items = [
   {
     id: 1,
-    title: "Perceuse à percussion",
-    price: "15€ /jour",
-    category: "bricolage",
-    user: "Jean B.",
-    img: "https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=400&q=80"
+    title: "Console PS5 + 2 manettes",
+    price: "25€ /jour",
+    category: "tech",
+    user: "Alexandre G.",
+    img: "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?auto=format&fit=crop&w=500&q=80"
   },
   {
     id: 2,
-    title: "Appareil Photo Canon",
-    price: "35€ /jour",
-    category: "tech",
-    user: "Sophie L.",
-    img: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=400&q=80"
+    title: "Trotinette Électrique Xiaomi",
+    price: "15€ /jour",
+    category: "loisir",
+    user: "Sarah M.",
+    img: "https://images.unsplash.com/photo-1596727147705-54a9d03409a2?auto=format&fit=crop&w=500&q=80"
   },
   {
     id: 3,
-    title: "Robe de soirée rouge",
-    price: "40€ /3 jours",
-    category: "mode",
-    user: "Clara M.",
-    img: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=400&q=80"
+    title: "Perceuse Bosch Pro",
+    price: "12€ /jour",
+    category: "bricolage",
+    user: "Karim B.",
+    img: "https://images.unsplash.com/photo-1581147036324-c17ac41dfa6c?auto=format&fit=crop&w=500&q=80"
   },
   {
     id: 4,
-    title: "Scie circulaire",
-    price: "20€ /jour",
-    category: "bricolage",
-    user: "Marc D.",
-    img: "https://images.unsplash.com/photo-1572981779307-38b8cabb2407?auto=format&fit=crop&w=400&q=80"
-  },
-   {
-    id: 5,
-    title: "Drone DJI Mini",
-    price: "50€ /jour",
+    title: "Drône DJI Mavic Air",
+    price: "45€ /jour",
     category: "tech",
-    user: "Lucas P.",
-    img: "https://images.unsplash.com/photo-1473968512647-3e447244af8f?auto=format&fit=crop&w=400&q=80"
+    user: "Julie P.",
+    img: "https://images.unsplash.com/photo-1473968512647-3e447244af8f?auto=format&fit=crop&w=500&q=80"
+  },
+  {
+    id: 5,
+    title: "Casque VR Oculus Quest 2",
+    price: "30€ /jour",
+    category: "tech",
+    user: "Thomas L.",
+    img: "https://images.unsplash.com/photo-1622979135225-d2ba269fb1ac?auto=format&fit=crop&w=500&q=80"
+  },
+  {
+    id: 6,
+    title: "GoPro Hero 10 Black",
+    price: "20€ /jour",
+    category: "tech",
+    user: "Marie F.",
+    img: "https://images.unsplash.com/photo-1564466136-1e62c0e86230?auto=format&fit=crop&w=500&q=80"
   }
 ];
 
 const grid = document.getElementById('products-grid');
 
-// Fonction pour afficher les objets
 function displayItems(filter = 'all') {
-  grid.innerHTML = ''; // On vide la grille avant de remplir
+  grid.innerHTML = '';
   
   items.forEach(item => {
-    // Si le filtre est 'all' OU si la catégorie correspond
     if (filter === 'all' || item.category === filter) {
-      
       const card = document.createElement('div');
       card.classList.add('card');
-      
       card.innerHTML = `
         <img src="${item.img}" alt="${item.title}">
         <div class="card-info">
           <div class="card-title">${item.title}</div>
           <div class="card-price">${item.price}</div>
-          <div class="card-user">👤 Loué par ${item.user}</div>
-          <button onclick="louer(${item.id})" style="width:100%; margin-top:10px; padding:8px; background:#007782; color:white; border:none; border-radius:4px; cursor:pointer;">Louer</button>
+          <div class="card-user">Proposé par ${item.user}</div>
+          <button class="btn-rent" onclick="louer(${item.id})">Réserver maintenant</button>
         </div>
       `;
-      
       grid.appendChild(card);
     }
   });
 }
 
-// Fonction pour filtrer
 function filterItems(category) {
-  displayItems(category);
+    // Gestion visuelle des boutons actifs
+    const buttons = document.querySelectorAll('.filters button');
+    buttons.forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    
+    displayItems(category);
 }
 
-// Fonction simulation de location
 function louer(id) {
-  alert("Demande de location envoyée pour l'objet #" + id + " !");
+  alert("🚀 Demande envoyée pour l'objet #" + id + " !");
 }
 
-// Lancer l'affichage au chargement
 displayItems();
