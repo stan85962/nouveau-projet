@@ -3,161 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RentSphere - Stan</title>
+    <title>RentSphere</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <div class="background-glow"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
 
-    <nav class="glass-panel">
-      <div class="logo">RentSphere <span class="dot"></span></div>
-      <div class="nav-icons">
-        <button onclick="showPage('home')" class="nav-btn active"><i class="fa-solid fa-house"></i></button>
-        <button onclick="showPage('search')" class="nav-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+    <nav class="floating-nav">
+        <div class="logo">RentSphere<span class="dot"></span></div>
         
-        <button onclick="showPage('chat')" class="nav-btn" style="position:relative;">
-            <i class="fa-regular fa-comment-dots"></i>
-            <span id="notif-badge" class="notif-badge" style="display:none;"></span>
-        </button>
+        <div class="nav-links">
+            <button onclick="showPage('home')" class="nav-item active"><i class="fa-solid fa-house"></i></button>
+            <button onclick="showPage('search')" class="nav-item"><i class="fa-solid fa-compass"></i></button>
+            
+            <button onclick="showPage('chat')" class="nav-item relative">
+                <i class="fa-regular fa-comment-dots"></i>
+                <span id="notif-badge" class="pulse-badge" style="display:none;"></span>
+            </button>
 
-        <button onclick="showPage('profile')" class="nav-btn profile-btn-nav">
-            <div class="mini-avatar"></div>
+            <button onclick="showPage('profile')" class="nav-item profile-trigger">
+                <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=150&q=80" class="nav-avatar" alt="Profil">
+            </button>
+        </div>
+
+        <button onclick="openCharter()" class="btn-glow">
+            <i class="fa-solid fa-plus"></i> Déposer
         </button>
-        <button onclick="openCharter()" class="btn-primary-sm">Déposer</button>
-      </div>
     </nav>
 
     <section id="page-home" class="page-section active">
-        <header class="hero">
-            <h1>Bonjour, <span class="gradient-text">Stan.</span></h1>
-            <p>Qu'allez-vous louer ou mettre en ligne aujourd'hui ?</p>
+        <header class="hero-section">
+            <div class="hero-text">
+                <h1>Bonjour, <span class="highlight">Stan.</span></h1>
+                <p>La communauté attend vos objets d'exception.</p>
+            </div>
+            <div class="hero-stat">
+                <span>🚀</span> 12 locations ce mois-ci
+            </div>
         </header>
 
-        <div class="filters">
-            <button onclick="filterItems('all')" class="active">Tout</button>
-            <button onclick="filterItems('tech')">⚡ Tech</button>
-            <button onclick="filterItems('mode')">✨ Mode</button>
-            <button onclick="filterItems('maison')">🏠 Maison</button>
+        <div class="category-scroll">
+            <button onclick="filterItems('all')" class="cat-pill active">Tout voir</button>
+            <button onclick="filterItems('tech')" class="cat-pill">📸 Tech & Caméras</button>
+            <button onclick="filterItems('mode')" class="cat-pill">👜 Mode & Luxe</button>
+            <button onclick="filterItems('loisir')" class="cat-pill">🛹 Mobilité</button>
         </div>
 
         <div class="container">
-            <div id="products-grid" class="grid"></div>
+            <div id="products-grid" class="grid-masonry"></div>
         </div>
     </section>
 
     <section id="page-search" class="page-section" style="display:none;">
-        <div class="container search-container">
-            <h2>Explorer 🌍</h2>
-            <div class="search-bar">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="search-input" placeholder="Ex: Drone, Robe, Perceuse...">
+        <div class="container">
+            <div class="search-header">
+                <h2>Explorer</h2>
+                <div class="search-wrapper">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="search-input" placeholder="Rechercher un objet (ex: Drone, Sac...)">
+                </div>
             </div>
-            <div id="search-results" class="grid"></div>
+            <div id="search-results" class="grid-masonry"></div>
         </div>
     </section>
 
     <section id="page-chat" class="page-section" style="display:none;">
         <div class="container">
-            <h2>Messages 💬</h2>
+            <h2 class="section-title">Messages</h2>
             <div class="chat-list">
-                <div id="new-msg" class="chat-item new-message" style="display:none;" onclick="readMessage()">
-                    <div class="avatar" style="background-image: url('https://i.pravatar.cc/150?img=32');"></div>
-                    <div class="chat-info">
-                        <div class="chat-name">Chloé (Intéressée) <span class="badge-new">Nouveau</span></div>
-                        <div class="chat-preview" style="color:white; font-weight:bold;">Bonjour Stan, votre PS5 est dispo ?</div>
+                <div id="new-msg" class="chat-card new" style="display:none;" onclick="readMessage()">
+                    <div class="chat-avatar" style="background-image: url('https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80');"></div>
+                    <div class="chat-content">
+                        <div class="chat-top">
+                            <span class="chat-name">Chloé D.</span>
+                            <span class="chat-time">À l'instant</span>
+                        </div>
+                        <p class="chat-preview">Bonjour Stan, votre caméra est disponible demain ?</p>
                     </div>
-                    <div class="chat-time">À l'instant</div>
+                    <div class="unread-dot"></div>
                 </div>
 
-                <div class="chat-item">
-                    <div class="avatar" style="background-image: url('https://i.pravatar.cc/150?img=9');"></div>
-                    <div class="chat-info">
-                        <div class="chat-name">Julie M.</div>
-                        <div class="chat-preview">Salut Stan ! Merci pour la caméra.</div>
+                <div class="chat-card">
+                    <div class="chat-avatar" style="background-image: url('https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80');"></div>
+                    <div class="chat-content">
+                        <div class="chat-top">
+                            <span class="chat-name">Marc L.</span>
+                            <span class="chat-time">Hier</span>
+                        </div>
+                        <p class="chat-preview">Merci pour la loc, c'était nickel !</p>
                     </div>
-                    <div class="chat-time">14:02</div>
                 </div>
             </div>
         </div>
     </section>
 
     <section id="page-profile" class="page-section" style="display:none;">
-        <div class="container profile-container">
-            <div class="profile-card glass-panel">
-                <div class="profile-header-top">
-                    <div class="profile-avatar-large"></div>
-                    <div class="profile-info">
-                        <h2 class="profile-name">Stan <i class="fa-solid fa-circle-check verified-badge"></i></h2>
-                        <div class="profile-meta">Membre depuis 2023 • Paris</div>
-                        <div class="profile-rating-big"><i class="fa-solid fa-star"></i> 5.0</div>
+        <div class="container">
+            <div class="profile-header-card">
+                <div class="profile-banner"></div>
+                <div class="profile-identity">
+                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80" class="profile-pic-big">
+                    <div class="profile-texts">
+                        <h2>Stan M. <i class="fa-solid fa-circle-check verified-icon"></i></h2>
+                        <p>Membre fondateur • Paris</p>
+                        <div class="rating-pill">
+                            <i class="fa-solid fa-star"></i> 5.0 <span>(Super Loueur)</span>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="profile-tabs">
-                    <button class="tab-btn active" onclick="switchProfileTab('reviews')">Avis (42)</button>
-                    <button class="tab-btn" onclick="switchProfileTab('favorites')">Mes Favoris ❤️</button>
+                <div class="profile-stats">
+                    <div class="stat"><h3>42</h3><small>Objets</small></div>
+                    <div class="stat"><h3>100%</h3><small>Réponse</small></div>
+                    <div class="stat"><h3>Top</h3><small>Fiabilité</small></div>
+                </div>
+
+                <div class="profile-nav">
+                    <button class="tab-link active" onclick="switchTab('reviews')">Avis (42)</button>
+                    <button class="tab-link" onclick="switchTab('favs')">Favoris ❤️</button>
                 </div>
             </div>
 
-            <div id="tab-reviews">
-                <div id="reviews-list" class="reviews-list"></div>
+            <div id="tab-reviews" class="tab-content">
+                <div id="reviews-list" class="reviews-wrapper"></div>
             </div>
 
-            <div id="tab-favorites" style="display:none;">
-                <h3 style="margin-bottom:20px;">Objets sauvegardés</h3>
-                <div id="favorites-grid" class="grid">
-                    <p style="color:#666;">Aucun favori pour l'instant.</p>
+            <div id="tab-favs" class="tab-content" style="display:none;">
+                <div id="favorites-grid" class="grid-masonry">
+                    <div class="empty-state">
+                        <i class="fa-regular fa-heart"></i>
+                        <p>Aucun coup de cœur pour l'instant.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <div id="modal-post" class="modal">
-        <div class="modal-content glass-panel">
-            <span class="close" onclick="closeModal('modal-post')">&times;</span>
+    <div id="modal-post" class="modal-overlay">
+        <div class="modal-glass">
+            <button class="close-btn" onclick="closeModal('modal-post')"><i class="fa-solid fa-xmark"></i></button>
             <h2>Créer une annonce</h2>
-            
-            <div class="form-group">
-                <label>Titre de l'objet</label>
-                <input type="text" id="post-title" class="input-field" placeholder="Ex: Vélo électrique...">
+            <div class="input-group">
+                <label>Nom de l'objet</label>
+                <input type="text" id="post-title" placeholder="Ex: Console de jeu, Vélo...">
             </div>
-
-            <div class="form-group">
-                <label>Prix par jour (€)</label>
-                <input type="number" id="post-price" class="input-field" placeholder="Ex: 15">
+            <div class="input-group">
+                <label>Prix / jour (€)</label>
+                <input type="number" id="post-price" placeholder="20">
             </div>
-
-            <div class="form-group">
+            <div class="input-group">
                 <label>Catégorie</label>
-                <select id="post-cat" class="input-field">
-                    <option value="tech">Tech / Gaming</option>
-                    <option value="mode">Mode / Luxe</option>
-                    <option value="maison">Maison / Bricolage</option>
+                <select id="post-cat">
+                    <option value="tech">📸 Tech</option>
+                    <option value="mode">👜 Mode</option>
+                    <option value="loisir">🛹 Loisir</option>
                 </select>
             </div>
-
-            <button class="btn-primary full-width" onclick="submitAd()">Publier l'annonce</button>
+            <button class="btn-glow full" onclick="submitAd()">Publier maintenant</button>
         </div>
     </div>
 
-    <div id="modal-charter" class="modal">
-        <div class="modal-content glass-panel">
-            <span class="close" onclick="closeModal('modal-charter')">&times;</span>
-            <h2>📜 Charte de Confiance</h2>
-            <div class="alert-box"><h3>⛔ RÈGLES</h3><ul><li>Photos réelles obligatoires.</li><li>Pas de contrefaçons.</li></ul></div>
-            <button class="btn-primary full-width" onclick="goToPostForm()">J'accepte et je continue</button>
+    <div id="modal-charter" class="modal-overlay">
+        <div class="modal-glass">
+            <button class="close-btn" onclick="closeModal('modal-charter')"><i class="fa-solid fa-xmark"></i></button>
+            <h2>📜 Charte Qualité</h2>
+            <ul class="rules-list">
+                <li>✅ Je certifie que l'objet est authentique.</li>
+                <li>✅ Je m'engage à être réactif.</li>
+                <li>⛔ Pas d'objets dangereux ou illégaux.</li>
+            </ul>
+            <button class="btn-glow full" onclick="goToPostForm()">J'accepte et je continue</button>
         </div>
     </div>
 
-    <div id="modal-booking" class="modal">
-        <div class="modal-content glass-panel booking-modal">
-            <span class="close" onclick="closeModal('modal-booking')">&times;</span>
-            <h2>Réservation</h2>
-            <div class="booking-summary"><div id="book-title"></div><div id="book-total"></div></div>
-            <button class="btn-primary full-width" onclick="confirmPayment()">Confirmer</button>
+    <div id="modal-booking" class="modal-overlay">
+        <div class="modal-glass">
+            <button class="close-btn" onclick="closeModal('modal-booking')"><i class="fa-solid fa-xmark"></i></button>
+            <h2>Récapitulatif</h2>
+            <div class="book-info">
+                <h3 id="book-title">Objet</h3>
+                <div class="price-tag" id="book-total">0€</div>
+            </div>
+            <div class="secure-badge">
+                <i class="fa-solid fa-shield-halved"></i> Paiement sécurisé & Caution incluse
+            </div>
+            <button class="btn-glow full" onclick="confirmPayment()">Valider et Payer</button>
         </div>
     </div>
 
